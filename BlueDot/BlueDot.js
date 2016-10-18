@@ -1,15 +1,15 @@
 'use strict';
 
-angular.module('myApp.view1', ['ngRoute'])
+angular.module('myApp.BlueDot', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view1', {
+  $routeProvider.when('/BlueDot', {
  
-    controller: 'View1Ctrl'
+    controller: 'BlueDotCtrl'
   });
 }])
 
-.controller('View1Ctrl', [function() {
+.controller('BlueDotCtrl', [function() {
 
 }]);
 
@@ -694,7 +694,7 @@ function doMouseDown(event) {
 	{
 		if(j%2 == 0)
 		{
-    			if((canvas_x >= 10+(80*i) && canvas_x <= 10+(80*(i+1))) && (canvas_y >= 10+(80*j) && canvas_y <= 10+(80*(j+1))))
+    			if((canvas_x > 10+(80*i) && canvas_x < 10+(80*(i+1))) && (canvas_y > 10+(80*j) && canvas_y < 10+(80*(j+1))))
     			{
 				if(items[j][i] != 1 && items[j][i] != 2)
 				{
@@ -750,7 +750,7 @@ function doMouseDown(event) {
     		}
 		else
 		{
-    			if((canvas_x >= 45+(80*i) && canvas_x <= 45+(80*(i+1))) && (canvas_y >= 10+(80*j) && canvas_y <= 10+(80*(j+1))))
+    			if((canvas_x > 45+(80*i) && canvas_x < 45+(80*(i+1))) && (canvas_y > 10+(80*j) && canvas_y < 10+(80*(j+1))))
     			{
 				if(items[j][i] != 1 && items[j][i] != 2)
 				{
