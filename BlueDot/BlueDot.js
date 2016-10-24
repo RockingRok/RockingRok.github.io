@@ -255,6 +255,13 @@ function bluedotmove() {
 }
 
 var queue = [];
+function queue_point(point, row_add, col_add)
+{
+    game_state[point.row+row_add][point.column+col_add] = 3;
+    var nextP = new Point(point.row+row_add, point.column+col_add, point);
+    queue.push(nextP);
+}
+
 function MazeSolver(row, column) {
     queue.push(new Point(row, column, null));
     while (queue.length != 0) //true
@@ -268,67 +275,43 @@ function MazeSolver(row, column) {
         if (p.row % 2 == 0) //no offset
         {
             if (game_state[p.row][p.column + 1] == 0) {
-                game_state[p.row][p.column + 1] = 3;
-                var nextP = new Point(p.row, p.column + 1, p);
-                queue.push(nextP);
+                queue_point(p, 0, 1);
             }
             if (game_state[p.row - 1][p.column] == 0) {
-                game_state[p.row - 1][p.column] = 3;
-                var nextP = new Point(p.row - 1, p.column, p);
-                queue.push(nextP);
+                queue_point(p, -1, 0);
             }
             if (game_state[p.row - 1][p.column - 1] == 0) {
-                game_state[p.row - 1][p.column - 1] = 3;
-                var nextP = new Point(p.row - 1, p.column - 1, p);
-                queue.push(nextP);
+                queue_point(p, -1, -1);
             }
             if (game_state[p.row][p.column - 1] == 0) {
-                game_state[p.row][p.column - 1] = 3;
-                var nextP = new Point(p.row, p.column - 1, p);
-                queue.push(nextP);
+                queue_point(p, 0, -1);
             }
             if (game_state[p.row + 1][p.column - 1] == 0) {
-                game_state[p.row + 1][p.column - 1] = 3;
-                var nextP = new Point(p.row + 1, p.column - 1, p);
-                queue.push(nextP);
+                queue_point(p, 1, -1);
             }
             if (game_state[p.row + 1][p.column] == 0) {
-                game_state[p.row + 1][p.column] = 3;
-                var nextP = new Point(p.row + 1, p.column, p);
-                queue.push(nextP);
+                queue_point(p, 1, 0);
             }
         }
         else	//offset
         {
             if (game_state[p.row][p.column + 1] == 0) {
-                game_state[p.row][p.column + 1] = 3;
-                var nextP = new Point(p.row, p.column + 1, p);
-                queue.push(nextP);
+                queue_point(p, 0, 1);
             }
             if (game_state[p.row - 1][p.column + 1] == 0) {
-                game_state[p.row - 1][p.column + 1] = 3;
-                var nextP = new Point(p.row - 1, p.column + 1, p);
-                queue.push(nextP);
+                queue_point(p, -1, 1);
             }
             if (game_state[p.row - 1][p.column] == 0) {
-                game_state[p.row - 1][p.column] = 3;
-                var nextP = new Point(p.row - 1, p.column, p);
-                queue.push(nextP);
+                queue_point(p, -1, 0);
             }
             if (game_state[p.row][p.column - 1] == 0) {
-                game_state[p.row][p.column - 1] = 3;
-                var nextP = new Point(p.row, p.column - 1, p);
-                queue.push(nextP);
+                queue_point(p, 0, -1);
             }
             if (game_state[p.row + 1][p.column] == 0) {
-                game_state[p.row + 1][p.column] = 3;
-                var nextP = new Point(p.row + 1, p.column, p);
-                queue.push(nextP);
+                queue_point(p, 1, 0);
             }
             if (game_state[p.row + 1][p.column + 1] == 0) {
-                game_state[p.row + 1][p.column + 1] = 3;
-                var nextP = new Point(p.row + 1, p.column + 1, p);
-                queue.push(nextP);
+                queue_point(p, 1, 1);
             }
         }
     }
@@ -380,6 +363,17 @@ function checkMoves() {
     }
 }
 
+function RandomMove_movement(row_add, col_add)
+{
+    game_state[blue_dot.row][blue_dot.column] = 0;
+    game_state[blue_dot.row + row_add][blue_dot.column + col_add] = 2;
+    blue_dot.row = blue_dot.row + row_add;
+    blue_dot.column = blue_dot.column + col_add;
+    var myVar1 = setTimeout(animation, 100);
+    var myVar2 = setTimeout(ClearScreen, 200);
+    var myVar3 = setTimeout(UpdateScore, 200);
+}
+
 function RandomMove() {
     checkMoves();
     (blue_dot.parent).row = blue_dot.row;
@@ -397,126 +391,42 @@ function RandomMove() {
     if (blue_dot.row % 2 == 0) //no offset
     {
         if (direction == "topright") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row - 1][blue_dot.column] = 2;
-            blue_dot.row = blue_dot.row - 1;
-            blue_dot.column = blue_dot.column;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(-1, 0);
         }
         if (direction == "right") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row][blue_dot.column + 1] = 2;
-            blue_dot.row = blue_dot.row;
-            blue_dot.column = blue_dot.column + 1;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(0, 1);
         }
         if (direction == "topleft") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row - 1][blue_dot.column - 1] = 2;
-            blue_dot.row = blue_dot.row - 1;
-            blue_dot.column = blue_dot.column - 1;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(-1, -1);
         }
         if (direction == "botright") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row + 1][blue_dot.column] = 2;
-            blue_dot.row = blue_dot.row + 1;
-            blue_dot.column = blue_dot.column;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(1, 0);
         }
         if (direction == "left") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row][blue_dot.column - 1] = 2;
-            blue_dot.row = blue_dot.row;
-            blue_dot.column = blue_dot.column - 1;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(0, -1);
         }
         if (direction == "botleft") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row + 1][blue_dot.column - 1] = 2;
-            blue_dot.row = blue_dot.row + 1;
-            blue_dot.column = blue_dot.column - 1;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(1, -1);
         }
     }
     else {
         if (direction == "topright") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row - 1][blue_dot.column + 1] = 2;
-            blue_dot.row = blue_dot.row - 1;
-            blue_dot.column = blue_dot.column + 1;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(-1, 1);
         }
         if (direction == "right") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row][blue_dot.column + 1] = 2;
-            blue_dot.row = blue_dot.row;
-            blue_dot.column = blue_dot.column + 1;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(0, 1);
         }
         if (direction == "topleft") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row - 1][blue_dot.column] = 2;
-            blue_dot.row = blue_dot.row - 1;
-            blue_dot.column = blue_dot.column;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(-1, 0);
         }
         if (direction == "botright") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row + 1][blue_dot.column + 1] = 2;
-            blue_dot.row = blue_dot.row + 1;
-            blue_dot.column = blue_dot.column + 1;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(1, 1);
         }
         if (direction == "left") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row][blue_dot.column - 1] = 2;
-            blue_dot.row = blue_dot.row;
-            blue_dot.column = blue_dot.column - 1;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(0, -1);
         }
         if (direction == "botleft") {
-            game_state[blue_dot.row][blue_dot.column] = 0;
-            game_state[blue_dot.row + 1][blue_dot.column] = 2;
-            blue_dot.row = blue_dot.row + 1;
-            blue_dot.column = blue_dot.column;
-            var myVar1 = setTimeout(animation, 100);
-            var myVar2 = setTimeout(ClearScreen, 200);
-            var myVar3 = setTimeout(UpdateScore, 200);
-            return;
+            RandomMove_movement(1, 0);
         }
     }
 }
