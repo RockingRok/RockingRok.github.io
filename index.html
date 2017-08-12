@@ -1,44 +1,26 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
-<canvas id="myCanvas" width="990" height="770" style="border:2px solid ;">
-<img id="blankcircle" width="77" height="77" src="images/blankcircle.jpg" alt="blankcircle">
-<img id="orangecircle" width="77" height="77" src="images/orangecircle.jpg" alt="orangecircle">
-<img id="bluecircle" width="77" height="77" src="images/bluecircle.jpg" alt="bluecircle">
-<img id="cleartext" width="77" height="77" src="images/cleartext.jpg" alt="cleartext">
-<img id="refresh" width="100" height="100" src="images/refresh.png" alt="refresh">
-<img id="bluecircleanimated" width="77" height="77" src="images/bluecircleanimated.png" alt="bluecircleanimated">
-<img id="bluecircleanimated2" width="77" height="77" src="images/bluecircleanimated2.png" alt="bluecircleanimated2">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Circle The Blue Dot</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="app.css">
-  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
-</head>
-<body>
-
-  <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-  <![endif]-->
-
-  <div ng-view></div>
-
-  <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
-  -->
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script> 
   <script src="app.js"></script>
-  <script src="BlueDot/BlueDot.js"></script>
-  <script src="components/version/version.js"></script>
-  <script src="components/version/version-directive.js"></script>
-  <script src="components/version/interpolate-filter.js"></script>
+  <script src="scripts/controllers/gameBoardController.js"></script>
+</head>
+<body ng-app = "CircleTheBlueDot">
+  <div class="game_container" ng-controller="GameBoardController">
+    <div class = "game_board">
+      <img id = "animation_circle" ng-show = "animation" ng-src = "images/blue_circle.png">
+      <div ng-repeat = "row in game_board" >
+          <img ng-repeat = "col in row[1] track by $index" id = "{{'circle_' + row[0] + $index}}" ng-click = "circleClicked(row[0], $index)" ng-src = "{{'images/' + row[1][$index] + '_circle.png'}}" height="10.55%" width="10.55%" ng-style="row[0] % 2 == 1 ? {'position':'relative', 'left':'5%'} : {'position':'relative', 'left':'0%'}">
+      </div>
+    </div>
+    <hr>
+    <div class = "player_options">
+	<span class = "steps"> Steps taken: {{steps}} </span>
+	<span class = "console"> {{console}}</span>
+	<img class = "refresh" onClick = "window.location.reload()" ng-src = "images/refresh.png">
+    </div>
+  </div>
 </body>
 </html>
